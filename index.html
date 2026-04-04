@@ -114,12 +114,18 @@ body {
   gap: 15px;
 }
 
-/* CARDS */
+/* GLASS CARDS */
 .card {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(15px);
   border-radius: 14px;
   overflow: hidden;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
 .card img {
@@ -201,7 +207,7 @@ button {
 
 <!-- HERO -->
 <div class="hero">
-  <img src="https://picsum.photos/1200/800?beach">
+  <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
   <div class="overlay"></div>
 
   <div class="hero-content">
@@ -223,7 +229,7 @@ button {
 
 <!-- AIRBNB -->
 <div class="section">
-  <img src="https://picsum.photos/1200/800?house">
+  <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85">
   <div class="dark"></div>
 
   <div class="section-content">
@@ -234,7 +240,7 @@ button {
 
 <!-- CARS -->
 <div class="section">
-  <img src="https://picsum.photos/1200/800?car">
+  <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d">
   <div class="dark"></div>
 
   <div class="section-content">
@@ -261,7 +267,6 @@ button {
       <li>Respect property and vehicle owners</li>
       <li>Use the platform legally</li>
     </ul>
-    <p>We are not responsible for disputes between users and owners.</p>
   </div>
 </div>
 
@@ -269,9 +274,7 @@ button {
   <div class="modal-content">
     <span class="close" onclick="closeModal('privacy')">X</span>
     <h2>Privacy Policy</h2>
-    <p>We collect minimal data such as search inputs and booking details.</p>
-    <p>Your data is not sold or shared with third parties.</p>
-    <p>All communication is handled via WhatsApp.</p>
+    <p>Your data is not sold or shared.</p>
   </div>
 </div>
 
@@ -285,9 +288,6 @@ const firebaseConfig = {
   authDomain: "coastal-marketing-38cae.firebaseapp.com",
   databaseURL: "https://coastal-marketing-38cae-default-rtdb.firebaseio.com",
   projectId: "coastal-marketing-38cae",
-  storageBucket: "coastal-marketing-38cae.firebasestorage.app",
-  messagingSenderId: "539485085349",
-  appId: "1:539485085349:web:5452b5ef6f31a7357b374c"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -309,11 +309,11 @@ function render(data){
   data.forEach(item => {
     let card = `
     <div class="card">
-      <img src="${item.image || 'https://picsum.photos/400'}">
+      <img src="${item.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2'}">
       <div class="card-content">
         <h3>${item.title}</h3>
-        <p>${item.location}</p>
-        <p class="price">KES ${item.price}/day</p>
+        <p>📍 ${item.location}</p>
+        <p class="price">KES ${item.price} / day</p>
 
         <button class="book" onclick="book('${item.title}','${item.phone}')">Book</button>
         <button class="whatsapp" onclick="contact('${item.phone}')">WhatsApp</button>
@@ -350,14 +350,22 @@ function book(title, phone){
   let checkout = document.getElementById("checkout").value;
 
   if(!checkin || !checkout){
-    alert("Select dates first");
+    alert("Please select check-in and check-out dates");
     return;
   }
 
-  let msg = `Booking Request:
-${title}
-From: ${checkin}
-To: ${checkout}`;
+  if(checkout <= checkin){
+    alert("Checkout must be after check-in");
+    return;
+  }
+
+  let msg = `🌴 Coastal Marketplace Booking
+
+Property: ${title}
+Check-in: ${checkin}
+Check-out: ${checkout}
+
+Please confirm availability.`;
 
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
 }
