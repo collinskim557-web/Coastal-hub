@@ -1,125 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coastal Marketplace</title>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<title>Coastal Booking</title>
 
 <style>
-body {margin:0;font-family:Arial;background:#0f172a;color:white;}
-header {display:flex;justify-content:space-between;padding:15px;background:#020617;}
-button,input,select {padding:10px;border:none;border-radius:8px;margin:5px;}
-button {background:#22c55e;color:white;cursor:pointer;}
+body { margin:0; font-family:Arial; background:#0f172a; color:white; }
+
+header {
+  display:flex; justify-content:space-between;
+  padding:15px; background:#020617;
+}
+
+button,input,select {
+  padding:10px; margin:5px;
+  border:none; border-radius:8px;
+}
+
+button { background:#22c55e; color:white; cursor:pointer; }
 
 .hero {
   background:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') center/cover;
-  padding:80px;text-align:center;
+  padding:80px; text-align:center;
 }
 
 .grid {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;padding:20px;
+  gap:20px; padding:20px;
 }
 
 .card {
-  height:240px;border-radius:15px;
-  display:flex;align-items:flex-end;
-  background-size:cover;background-position:center;
+  height:260px;
+  border-radius:15px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  background-size:cover;
 }
 
 .overlay {
-  width:100%;
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.7);
   padding:10px;
 }
 
-.booked {background:red;padding:5px;border-radius:5px;}
-.hidden {display:none;}
+.hidden { display:none; }
 
 #msg {
   position:fixed;
-  top:10px;
-  left:50%;
-  transform:translateX(-50%);
-  padding:12px 20px;
+  top:10px; right:10px;
+  padding:10px;
   border-radius:8px;
   display:none;
-  font-weight:bold;
 }
+.success { background:green; }
+.error { background:red; }
 
-.success {background:#22c55e;}
-.error {background:#ef4444;}
+.calendar {
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+}
 </style>
 </head>
 
 <body>
 
-<div id="msg"></div>
-
 <header>
-  <h2>Coastal Marketplace</h2>
-  <div>
-    <button onclick="toggleAuth()">Login</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+<h2>Coastal Booking</h2>
+<div>
+<button onclick="toggleAuth()">Login</button>
+<button onclick="logout()">Logout</button>
+</div>
 </header>
 
+<div id="msg"></div>
+
 <div class="hero">
-  <h1>Find Cars & Stays</h1>
-  <input id="search" placeholder="Search..." oninput="filterListings()">
-
-  <select id="filterLocation" onchange="filterListings()">
-    <option value="">All Locations</option>
-    <option>Mombasa</option>
-    <option>Diani</option>
-    <option>Kilifi</option>
-    <option>Kwale</option>
-  </select>
+<h1>Book Cars & Stays</h1>
+<input id="search" placeholder="Search..." oninput="filterListings()">
 </div>
 
-<h2 style="padding-left:20px;">Popular Stays</h2>
-<div id="stays" class="grid"></div>
+<h2 style="padding-left:20px;">Listings</h2>
+<div id="listings" class="grid"></div>
 
-<h2 style="padding-left:20px;">Cars</h2>
-<div id="cars" class="grid"></div>
+<!-- AUTH -->
+<div id="authBox" class="hidden">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="signup()">Sign Up</button>
+<button onclick="login()">Login</button>
+</div>
 
+<!-- DASHBOARD -->
 <div id="dashboard" class="hidden">
-  <h2 style="padding-left:20px;">My Dashboard</h2>
+<h2 style="padding-left:20px;">My Dashboard</h2>
 
-  <div style="padding:20px;">
-    <input id="title" placeholder="Title">
-    <input id="image" placeholder="Image URL">
+<input id="title" placeholder="Title">
+<input id="image" placeholder="Image URL">
+<input id="price" placeholder="Price">
 
-    <select id="location">
-      <option>Mombasa</option>
-      <option>Diani</option>
-      <option>Kilifi</option>
-      <option>Kwale</option>
-    </select>
+<select id="location">
+<option>Mombasa</option>
+<option>Diani</option>
+<option>Kilifi</option>
+<option>Kwale</option>
+</select>
 
-    <select id="type">
-      <option value="stay">Stay</option>
-      <option value="car">Car</option>
-    </select>
+<select id="type">
+<option value="stay">Stay</option>
+<option value="car">Car</option>
+</select>
 
-    <input id="price" placeholder="Price">
-    <button onclick="addListing()">Add</button>
-  </div>
+<button onclick="addListing()">Add Listing</button>
 
-  <div id="myListings" class="grid"></div>
+<div id="myListings" class="grid"></div>
 </div>
 
-<div id="authBox" class="hidden" style="padding:20px;">
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="signup()">Sign Up</button>
-  <button onclick="login()">Login</button>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -130,44 +129,43 @@ const firebaseConfig = {
   authDomain: "coastal-marketing-38cae.firebaseapp.com",
   databaseURL: "https://coastal-marketing-38cae-default-rtdb.firebaseio.com",
   projectId: "coastal-marketing-38cae",
-  storageBucket: "coastal-marketing-38cae.firebasestorage.app",
-  messagingSenderId: "539485085349",
-  appId: "1:539485085349:web:5452b5ef6f31a7357b374c"
 };
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-let allListings = [];
+/* UI */
+const authBox = document.getElementById("authBox");
+const dashboard = document.getElementById("dashboard");
+const myListings = document.getElementById("myListings");
 
-/* MESSAGE */
-function showMsg(text,type){
-  msg.innerText=text;
-  msg.className=type;
-  msg.style.display="block";
-  setTimeout(()=>msg.style.display="none",3000);
+function msg(t,type){
+  const m=document.getElementById("msg");
+  m.innerText=t;
+  m.className=type;
+  m.style.display="block";
+  setTimeout(()=>m.style.display="none",3000);
 }
 
 /* AUTH */
 function toggleAuth(){ authBox.classList.toggle("hidden"); }
 
 function signup(){
-  auth.createUserWithEmailAndPassword(email.value,password.value)
-  .then(()=> showMsg("Account created successfully","success"))
-  .catch(e=> showMsg(e.message,"error"));
+  auth.createUserWithEmailAndPassword(
+    email.value,password.value
+  ).then(()=>msg("Account created","success"))
+  .catch(e=>msg(e.message,"error"));
 }
 
 function login(){
-  auth.signInWithEmailAndPassword(email.value,password.value)
-  .then(()=> showMsg("Login successful","success"))
-  .catch(e=> showMsg(e.message,"error"));
+  auth.signInWithEmailAndPassword(
+    email.value,password.value
+  ).then(()=>msg("Logged in","success"))
+  .catch(e=>msg(e.message,"error"));
 }
 
-function logout(){
-  auth.signOut();
-  showMsg("Logged out","success");
-}
+function logout(){ auth.signOut(); }
 
 auth.onAuthStateChanged(user=>{
   if(user){
@@ -175,138 +173,100 @@ auth.onAuthStateChanged(user=>{
     loadMyListings(user.uid);
   } else {
     dashboard.classList.add("hidden");
-    myListings.innerHTML="";
   }
 });
 
-/* ADD */
+/* ADD LISTING */
 function addListing(){
-  const user = auth.currentUser;
-  if(!user) return showMsg("Login first","error");
+  const user=auth.currentUser;
+  if(!user) return msg("Login first","error");
 
-  const data = {
+  db.ref("listings/"+user.uid).push({
     title:title.value,
     image:image.value,
-    type:type.value,
-    location:location.value,
     price:price.value,
-    uid:user.uid
-  };
-
-  db.ref("listings/"+user.uid).push(data);
-  showMsg("Listing added","success");
-}
-
-/* DELETE */
-function deleteListing(uid,id){
-  db.ref("listings/"+uid+"/"+id).remove();
-}
-
-/* BOOK */
-function bookNow(uid,id){
-  const input=document.createElement("input");
-
-  flatpickr(input,{
-    mode:"range",
-    minDate:"today",
-    onClose:function(selectedDates){
-      if(selectedDates.length===2){
-        const start=selectedDates[0].toISOString().split("T")[0];
-        const end=selectedDates[1].toISOString().split("T")[0];
-
-        db.ref("bookings/"+uid+"/"+id).push({start,end});
-        showMsg("Booked successfully","success");
-      }
-    }
-  }).open();
-}
-
-/* CHECK BOOKED */
-function isBooked(bookings){
-  if(!bookings) return false;
-  const today=new Date().toISOString().split("T")[0];
-
-  return Object.values(bookings).some(b =>
-    b.start <= today && b.end >= today
-  );
-}
-
-/* LOAD USER */
-function loadMyListings(uid){
-  db.ref("listings/"+uid).on("value",snap=>{
-    myListings.innerHTML="";
-
-    snap.forEach(item=>{
-      const d=item.val();
-      const id=item.key;
-
-      myListings.innerHTML+=`
-        <div class="card" style="background:url('${d.image}')">
-          <div class="overlay">
-            <h3>${d.title}</h3>
-            <p>${d.location}</p>
-            <p>$${d.price}</p>
-            <button onclick="deleteListing('${uid}','${id}')">Delete</button>
-          </div>
-        </div>
-      `;
-    });
+    location:location.value,
+    type:type.value
   });
 }
 
-/* LOAD ALL */
+/* LOAD */
+let allListings=[];
+
 db.ref("listings").on("value",snap=>{
   allListings=[];
-
-  snap.forEach(userSnap=>{
-    userSnap.forEach(item=>{
-      const d=item.val();
-      d.id=item.key;
-      d.owner=userSnap.key;
+  snap.forEach(u=>{
+    u.forEach(i=>{
+      let d=i.val();
+      d.id=i.key;
+      d.uid=u.key;
       allListings.push(d);
     });
   });
-
-  renderListings(allListings);
+  render(allListings);
 });
 
-/* RENDER */
-function renderListings(data){
-  stays.innerHTML="";
-  cars.innerHTML="";
-
+function render(data){
+  listings.innerHTML="";
   data.forEach(d=>{
-    db.ref("bookings/"+d.owner+"/"+d.id).once("value").then(bsnap=>{
-      const booked=isBooked(bsnap.val());
+    const img=d.image || (d.type==="car"
+      ? "https://images.unsplash.com/photo-1503376780353-7e6692767b70"
+      : "https://images.unsplash.com/photo-1566073771259-6a8506099945");
 
-      const card=`
-        <div class="card" style="background:url('${d.image}')">
-          <div class="overlay">
-            <h3>${d.title}</h3>
-            <p>${d.location}</p>
-            <p>$${d.price}</p>
-            ${booked ? '<div class="booked">BOOKED</div>' : `<button onclick="bookNow('${d.owner}','${d.id}')">Book</button>`}
-          </div>
-        </div>
-      `;
+    listings.innerHTML+=`
+    <div class="card" style="background:url('${img}')">
+      <div class="overlay">
+        <h3>${d.title}</h3>
+        <p>${d.location} | $${d.price}</p>
 
-      if(d.type==="stay") stays.innerHTML+=card;
-      else cars.innerHTML+=card;
-    });
+        <!-- REAL CALENDAR -->
+        <input type="date" id="in_${d.id}">
+        <input type="date" id="out_${d.id}">
+
+        <button onclick="book('${d.uid}','${d.id}')">Book</button>
+      </div>
+    </div>`;
   });
 }
 
-/* FILTER */
+/* BOOKING */
+function book(uid,id){
+  const user=auth.currentUser;
+  if(!user) return msg("Login first","error");
+
+  const checkIn=document.getElementById("in_"+id).value;
+  const checkOut=document.getElementById("out_"+id).value;
+
+  if(!checkIn || !checkOut)
+    return msg("Select dates","error");
+
+  db.ref("bookings/"+id).push({
+    user:user.uid,
+    checkIn,
+    checkOut
+  });
+
+  msg("Booked successfully","success");
+}
+
+/* SEARCH */
 function filterListings(){
-  const text=search.value.toLowerCase();
-  const loc=filterLocation.value;
+  const v=search.value.toLowerCase();
+  render(allListings.filter(d=>d.title.toLowerCase().includes(v)));
+}
 
-  const filtered=allListings.filter(d=>
-    d.title.toLowerCase().includes(text) &&
-    (loc==="" || d.location===loc)
-  );
-
-  renderListings(filtered);
+/* MY LISTINGS */
+function loadMyListings(uid){
+  db.ref("listings/"+uid).on("value",snap=>{
+    myListings.innerHTML="";
+    snap.forEach(i=>{
+      let d=i.val();
+      myListings.innerHTML+=`
+      <div class="card" style="background:url('${d.image}')">
+        <div class="overlay">${d.title}</div>
+      </div>`;
+    });
+  });
 }
 </script>
 
