@@ -39,7 +39,6 @@ button {background:#22c55e;color:white;cursor:pointer;}
 .booked {background:red;padding:5px;border-radius:5px;}
 .hidden {display:none;}
 
-/* 🔥 MESSAGE BOX */
 #msg {
   position:fixed;
   top:10px;
@@ -140,6 +139,9 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
+let allListings = [];
+
+/* MESSAGE */
 function showMsg(text,type){
   msg.innerText=text;
   msg.className=type;
@@ -152,22 +154,14 @@ function toggleAuth(){ authBox.classList.toggle("hidden"); }
 
 function signup(){
   auth.createUserWithEmailAndPassword(email.value,password.value)
-  .then(()=>{
-    showMsg("Account created successfully","success");
-  })
-  .catch(e=>{
-    showMsg(e.message,"error");
-  });
+  .then(()=> showMsg("Account created successfully","success"))
+  .catch(e=> showMsg(e.message,"error"));
 }
 
 function login(){
   auth.signInWithEmailAndPassword(email.value,password.value)
-  .then(()=>{
-    showMsg("Login successful","success");
-  })
-  .catch(e=>{
-    showMsg(e.message,"error");
-  });
+  .then(()=> showMsg("Login successful","success"))
+  .catch(e=> showMsg(e.message,"error"));
 }
 
 function logout(){
@@ -175,8 +169,146 @@ function logout(){
   showMsg("Logged out","success");
 }
 
-/* KEEP REST SAME */
+auth.onAuthStateChanged(user=>{
+  if(user){
+    dashboard.classList.remove("hidden");
+    loadMyListings(user.uid);
+  } else {
+    dashboard.classList.add("hidden");
+    myListings.innerHTML="";
+  }
+});
+
+/* ADD */
+function addListing(){
+  const user = auth.currentUser;
+  if(!user) return showMsg("Login first","error");
+
+  const data = {
+    title:title.value,
+    image:image.value,
+    type:type.value,
+    location:location.value,
+    price:price.value,
+    uid:user.uid
+  };
+
+  db.ref("listings/"+user.uid).push(data);
+  showMsg("Listing added","success");
+}
+
+/* DELETE */
+function deleteListing(uid,id){
+  db.ref("listings/"+uid+"/"+id).remove();
+}
+
+/* BOOK */
+function bookNow(uid,id){
+  const input=document.createElement("input");
+
+  flatpickr(input,{
+    mode:"range",
+    minDate:"today",
+    onClose:function(selectedDates){
+      if(selectedDates.length===2){
+        const start=selectedDates[0].toISOString().split("T")[0];
+        const end=selectedDates[1].toISOString().split("T")[0];
+
+        db.ref("bookings/"+uid+"/"+id).push({start,end});
+        showMsg("Booked successfully","success");
+      }
+    }
+  }).open();
+}
+
+/* CHECK BOOKED */
+function isBooked(bookings){
+  if(!bookings) return false;
+  const today=new Date().toISOString().split("T")[0];
+
+  return Object.values(bookings).some(b =>
+    b.start <= today && b.end >= today
+  );
+}
+
+/* LOAD USER */
+function loadMyListings(uid){
+  db.ref("listings/"+uid).on("value",snap=>{
+    myListings.innerHTML="";
+
+    snap.forEach(item=>{
+      const d=item.val();
+      const id=item.key;
+
+      myListings.innerHTML+=`
+        <div class="card" style="background:url('${d.image}')">
+          <div class="overlay">
+            <h3>${d.title}</h3>
+            <p>${d.location}</p>
+            <p>$${d.price}</p>
+            <button onclick="deleteListing('${uid}','${id}')">Delete</button>
+          </div>
+        </div>
+      `;
+    });
+  });
+}
+
+/* LOAD ALL */
+db.ref("listings").on("value",snap=>{
+  allListings=[];
+
+  snap.forEach(userSnap=>{
+    userSnap.forEach(item=>{
+      const d=item.val();
+      d.id=item.key;
+      d.owner=userSnap.key;
+      allListings.push(d);
+    });
+  });
+
+  renderListings(allListings);
+});
+
+/* RENDER */
+function renderListings(data){
+  stays.innerHTML="";
+  cars.innerHTML="";
+
+  data.forEach(d=>{
+    db.ref("bookings/"+d.owner+"/"+d.id).once("value").then(bsnap=>{
+      const booked=isBooked(bsnap.val());
+
+      const card=`
+        <div class="card" style="background:url('${d.image}')">
+          <div class="overlay">
+            <h3>${d.title}</h3>
+            <p>${d.location}</p>
+            <p>$${d.price}</p>
+            ${booked ? '<div class="booked">BOOKED</div>' : `<button onclick="bookNow('${d.owner}','${d.id}')">Book</button>`}
+          </div>
+        </div>
+      `;
+
+      if(d.type==="stay") stays.innerHTML+=card;
+      else cars.innerHTML+=card;
+    });
+  });
+}
+
+/* FILTER */
+function filterListings(){
+  const text=search.value.toLowerCase();
+  const loc=filterLocation.value;
+
+  const filtered=allListings.filter(d=>
+    d.title.toLowerCase().includes(text) &&
+    (loc==="" || d.location===loc)
+  );
+
+  renderListings(filtered);
+}
 </script>
 
 </body>
-</html>
+  </html>
