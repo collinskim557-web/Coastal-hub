@@ -3,387 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌊 Coastal Marketplace | Stay & Ride</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #0f172a;
-  color: white;
-}
-
-/* NAV */
-.nav {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 25px;
-  z-index: 5;
-}
-
-.logo {
-  font-weight: bold;
-  font-size: 18px;
-  color: #38bdf8;
-}
-
-/* HERO */
-.hero {
-  height: 75vh;
-  position: relative;
-}
-
-.hero img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  top: 30%;
-}
-
-/* SEARCH */
-.search-box {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
-  padding: 15px;
-  border-radius: 14px;
-  margin-top: 15px;
-}
-
-.search-box input, select {
-  padding: 10px;
-  margin: 5px;
-  border: none;
-  border-radius: 6px;
-}
-
-.search-box button {
-  padding: 10px;
-  background: #38bdf8;
-  border: none;
-  border-radius: 6px;
-}
-
-/* SECTION */
-.section {
-  position: relative;
-  height: 320px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-
-.section img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.dark {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-}
-
-.section-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  padding: 20px;
-}
-
-/* LISTINGS */
-.listings {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
-  gap: 15px;
-}
-
-/* GLASS CARDS */
-.card {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(15px);
-  border-radius: 14px;
-  overflow: hidden;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-}
-
-.card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 10px;
-}
-
-.price {
-  color: #22c55e;
-}
-
-/* BUTTONS */
-button {
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  margin-top: 5px;
-  cursor: pointer;
-}
-
-.book {
-  background: #38bdf8;
-  width: 100%;
-}
-
-.whatsapp {
-  background: #22c55e;
-  width: 100%;
-}
-
-/* FOOTER */
-.footer {
-  background: #020617;
-  padding: 20px;
-  text-align: center;
-}
-
-.footer a {
-  color: #38bdf8;
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-/* MODAL */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  padding: 20px;
-  overflow: auto;
-}
-
-.modal-content {
-  background: #0f172a;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.close {
-  float: right;
-  cursor: pointer;
-  color: red;
-}
-</style>
+<title>Pwani - Post Listing</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="bg-gray-50 text-gray-900">
 
-<!-- NAV -->
-<div class="nav">
-  <div class="logo">🌊 Coastal Marketplace</div>
-</div>
+<!-- HEADER -->
+<header class="bg-white shadow">
+  <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
+    <h1 class="text-2xl font-bold text-blue-700">Pwani</h1>
+    <nav class="flex gap-6 text-sm">
+      <span>Explore</span>
+      <span>My Bookings</span>
+      <span class="font-semibold">Post Listing</span>
+    </nav>
+  </div>
+</header>
 
-<!-- HERO -->
-<div class="hero">
-  <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
-  <div class="overlay"></div>
+<!-- FORM -->
+<section class="max-w-3xl mx-auto p-6">
+  <h2 class="text-3xl font-bold mb-2">Post a Listing</h2>
+  <p class="text-gray-600 mb-6">Reach thousands of travelers on Kenya's coast</p>
 
-  <div class="hero-content">
-    <h1>Stay. Ride. Explore the Coast</h1>
-
-    <div class="search-box">
-      <input type="text" id="search" placeholder="Location">
-      <input type="date" id="checkin">
-      <input type="date" id="checkout">
-      <select id="type">
-        <option value="">All</option>
-        <option value="airbnb">Airbnb</option>
-        <option value="car">Car</option>
-      </select>
-      <button onclick="search()">Search</button>
+  <!-- TYPE -->
+  <div class="mb-6">
+    <h3 class="font-semibold mb-2">What are you listing?</h3>
+    <div class="flex gap-6">
+      <label><input type="radio" name="type" value="stay"> Stay / Accommodation</label>
+      <label><input type="radio" name="type" value="car"> Car for Hire</label>
     </div>
   </div>
-</div>
 
-<!-- AIRBNB -->
-<div class="section">
-  <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85">
-  <div class="dark"></div>
+  <!-- BASIC -->
+  <h3 class="font-semibold mb-3">Basic Information</h3>
+  <input placeholder="Listing Title" class="w-full p-3 border rounded mb-3">
+  <textarea placeholder="Description" class="w-full p-3 border rounded mb-3"></textarea>
 
-  <div class="section-content">
-    <h2>🏠 Popular Stays</h2>
-    <div class="listings" id="airbnb"></div>
+  <select class="w-full p-3 border rounded mb-3">
+    <option>Select Location</option>
+    <option>Mombasa</option>
+    <option>Diani</option>
+    <option>Watamu</option>
+    <option>Lamu</option>
+  </select>
+
+  <input placeholder="Price per Day (KES)" class="w-full p-3 border rounded mb-3">
+  <input placeholder="Photo URL" class="w-full p-3 border rounded mb-6">
+
+  <!-- STAY DETAILS -->
+  <h3 class="font-semibold mb-3">Stay Details</h3>
+  <input placeholder="Max Guests" class="w-full p-3 border rounded mb-3">
+  <input placeholder="Bedrooms" class="w-full p-3 border rounded mb-6">
+
+  <!-- AMENITIES -->
+  <h3 class="font-semibold mb-3">Amenities</h3>
+  <div class="grid grid-cols-2 gap-2 mb-4">
+    <label><input type="checkbox"> WiFi</label>
+    <label><input type="checkbox"> Swimming Pool</label>
+    <label><input type="checkbox"> Air Conditioning</label>
+    <label><input type="checkbox"> Ocean View</label>
+    <label><input type="checkbox"> Private Beach</label>
+    <label><input type="checkbox"> Breakfast</label>
+    <label><input type="checkbox"> BBQ</label>
+    <label><input type="checkbox"> Parking</label>
   </div>
-</div>
 
-<!-- CARS -->
-<div class="section">
-  <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d">
-  <div class="dark"></div>
+  <input placeholder="Add custom feature" class="w-full p-3 border rounded mb-6">
 
-  <div class="section-content">
-    <h2>🚗 Cars for Hire</h2>
-    <div class="listings" id="cars"></div>
-  </div>
-</div>
+  <!-- CONTACT -->
+  <h3 class="font-semibold mb-3">Your Contact Details</h3>
+  <input placeholder="Full Name" class="w-full p-3 border rounded mb-3">
+  <input placeholder="Phone Number" class="w-full p-3 border rounded mb-6">
+
+  <button class="w-full bg-blue-600 text-white py-3 rounded-lg">Publish Listing</button>
+</section>
 
 <!-- FOOTER -->
-<div class="footer">
-  © 2026 Coastal Marketplace 🌴 |
-  <a onclick="openModal('terms')">Terms</a>
-  <a onclick="openModal('privacy')">Privacy</a>
-</div>
+<footer class="bg-black text-white p-6 mt-10">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-6 text-sm">
+    <div>
+      <h3 class="font-bold">Pwani</h3>
+      <p>Your gateway to Kenya's coastal paradise.</p>
+    </div>
 
-<!-- MODALS -->
-<div id="terms" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('terms')">X</span>
-    <h2>Terms of Service</h2>
-    <p>By using Coastal Marketplace, you agree to:</p>
-    <ul>
-      <li>Provide accurate booking information</li>
-      <li>Respect property and vehicle owners</li>
-      <li>Use the platform legally</li>
-    </ul>
+    <div>
+      <h3 class="font-bold">Explore</h3>
+      <p>Villas & Stays</p>
+      <p>Cars for Hire</p>
+      <p>Diani Beach</p>
+      <p>Lamu Island</p>
+    </div>
+
+    <div>
+      <h3 class="font-bold">Contact</h3>
+      <p>hello@pwanimarket.co.ke</p>
+      <p>+254 712413188</p>
+    </div>
   </div>
-</div>
-
-<div id="privacy" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('privacy')">X</span>
-    <h2>Privacy Policy</h2>
-    <p>Your data is not sold or shared.</p>
-  </div>
-</div>
-
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBKcnd952c81LyG0ofN_un-BCMdb0FzQ4w",
-  authDomain: "coastal-marketing-38cae.firebaseapp.com",
-  databaseURL: "https://coastal-marketing-38cae-default-rtdb.firebaseio.com",
-  projectId: "coastal-marketing-38cae",
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-function load(){
-  db.ref("listings").on("value", snap => {
-    render(Object.values(snap.val() || {}));
-  });
-}
-
-function render(data){
-  let airbnb = document.getElementById("airbnb");
-  let cars = document.getElementById("cars");
-
-  airbnb.innerHTML = "";
-  cars.innerHTML = "";
-
-  data.forEach(item => {
-    let card = `
-    <div class="card">
-      <img src="${item.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2'}">
-      <div class="card-content">
-        <h3>${item.title}</h3>
-        <p>📍 ${item.location}</p>
-        <p class="price">KES ${item.price} / day</p>
-
-        <button class="book" onclick="book('${item.title}','${item.phone}')">Book</button>
-        <button class="whatsapp" onclick="contact('${item.phone}')">WhatsApp</button>
-      </div>
-    </div>`;
-
-    if(item.type === "car"){
-      cars.innerHTML += card;
-    } else {
-      airbnb.innerHTML += card;
-    }
-  });
-}
-
-function search(){
-  let val = document.getElementById("search").value.toLowerCase();
-  let type = document.getElementById("type").value;
-
-  db.ref("listings").once("value", snap => {
-    let data = Object.values(snap.val() || {});
-
-    let filtered = data.filter(item =>
-      (item.location.toLowerCase().includes(val) ||
-       item.title.toLowerCase().includes(val)) &&
-      (type === "" || item.type === type)
-    );
-
-    render(filtered);
-  });
-}
-
-function book(title, phone){
-  let checkin = document.getElementById("checkin").value;
-  let checkout = document.getElementById("checkout").value;
-
-  if(!checkin || !checkout){
-    alert("Please select check-in and check-out dates");
-    return;
-  }
-
-  if(checkout <= checkin){
-    alert("Checkout must be after check-in");
-    return;
-  }
-
-  let msg = `🌴 Coastal Marketplace Booking
-
-Property: ${title}
-Check-in: ${checkin}
-Check-out: ${checkout}
-
-Please confirm availability.`;
-
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
-}
-
-function contact(phone){
-  window.open(`https://wa.me/${phone}`);
-}
-
-function openModal(id){
-  document.getElementById(id).style.display = "block";
-}
-
-function closeModal(id){
-  document.getElementById(id).style.display = "none";
-}
-
-load();
-</script>
+</footer>
 
 </body>
-      </html>
+</html>
