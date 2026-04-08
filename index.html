@@ -3,80 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pwani - Post Listing</title>
+<title>Pwani Marketplace</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<style>
+.fade-in{animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
 </head>
 
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gradient-to-br from-blue-50 to-white text-gray-900">
 
 <!-- HEADER -->
-<header class="bg-white shadow">
+<header class="bg-white/80 backdrop-blur shadow sticky top-0 z-50">
   <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
     <h1 class="text-2xl font-bold text-blue-700">Pwani</h1>
     <nav class="flex gap-6 text-sm">
-      <span>Explore</span>
+      <a href="index.html" class="font-semibold text-blue-600">Home</a>
+      <a href="post-listing.html">Post Listing</a>
       <span>My Bookings</span>
-      <span class="font-semibold">Post Listing</span>
     </nav>
   </div>
 </header>
 
-<!-- FORM -->
-<section class="max-w-3xl mx-auto p-6">
-  <h2 class="text-3xl font-bold mb-2">Post a Listing</h2>
-  <p class="text-gray-600 mb-6">Reach thousands of travelers on Kenya's coast</p>
-
-  <!-- TYPE -->
-  <div class="mb-6">
-    <h3 class="font-semibold mb-2">What are you listing?</h3>
-    <div class="flex gap-6">
-      <label><input type="radio" name="type" value="stay"> Stay / Accommodation</label>
-      <label><input type="radio" name="type" value="car"> Car for Hire</label>
-    </div>
+<!-- HOMEPAGE HERO -->
+<section class="relative h-[60vh] flex items-center justify-center text-white fade-in">
+  <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="absolute w-full h-full object-cover">
+  <div class="absolute inset-0 bg-black/50"></div>
+  <div class="relative text-center">
+    <h2 class="text-5xl font-bold">Explore Kenya's Coast</h2>
+    <p class="mt-3 text-lg">Find the perfect ride or a breezy stay from Mombasa to Lamu.</p>
+    <a href="post-listing.html" class="mt-5 inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition">Post Your Listing</a>
   </div>
+</section>
 
-  <!-- BASIC -->
-  <h3 class="font-semibold mb-3">Basic Information</h3>
-  <input placeholder="Listing Title" class="w-full p-3 border rounded mb-3">
-  <textarea placeholder="Description" class="w-full p-3 border rounded mb-3"></textarea>
-
-  <select class="w-full p-3 border rounded mb-3">
-    <option>Select Location</option>
-    <option>Mombasa</option>
-    <option>Diani</option>
-    <option>Watamu</option>
-    <option>Lamu</option>
-  </select>
-
-  <input placeholder="Price per Day (KES)" class="w-full p-3 border rounded mb-3">
-  <input placeholder="Photo URL" class="w-full p-3 border rounded mb-6">
-
-  <!-- STAY DETAILS -->
-  <h3 class="font-semibold mb-3">Stay Details</h3>
-  <input placeholder="Max Guests" class="w-full p-3 border rounded mb-3">
-  <input placeholder="Bedrooms" class="w-full p-3 border rounded mb-6">
-
-  <!-- AMENITIES -->
-  <h3 class="font-semibold mb-3">Amenities</h3>
-  <div class="grid grid-cols-2 gap-2 mb-4">
-    <label><input type="checkbox"> WiFi</label>
-    <label><input type="checkbox"> Swimming Pool</label>
-    <label><input type="checkbox"> Air Conditioning</label>
-    <label><input type="checkbox"> Ocean View</label>
-    <label><input type="checkbox"> Private Beach</label>
-    <label><input type="checkbox"> Breakfast</label>
-    <label><input type="checkbox"> BBQ</label>
-    <label><input type="checkbox"> Parking</label>
-  </div>
-
-  <input placeholder="Add custom feature" class="w-full p-3 border rounded mb-6">
-
-  <!-- CONTACT -->
-  <h3 class="font-semibold mb-3">Your Contact Details</h3>
-  <input placeholder="Full Name" class="w-full p-3 border rounded mb-3">
-  <input placeholder="Phone Number" class="w-full p-3 border rounded mb-6">
-
-  <button class="w-full bg-blue-600 text-white py-3 rounded-lg">Publish Listing</button>
+<!-- FEATURED LISTINGS -->
+<section class="max-w-7xl mx-auto p-6 fade-in">
+  <h2 class="text-3xl font-bold mb-4">Latest Listings</h2>
+  <div id="listingContainer" class="grid md:grid-cols-3 gap-6"></div>
 </section>
 
 <!-- FOOTER -->
@@ -86,7 +49,6 @@
       <h3 class="font-bold">Pwani</h3>
       <p>Your gateway to Kenya's coastal paradise.</p>
     </div>
-
     <div>
       <h3 class="font-bold">Explore</h3>
       <p>Villas & Stays</p>
@@ -94,7 +56,6 @@
       <p>Diani Beach</p>
       <p>Lamu Island</p>
     </div>
-
     <div>
       <h3 class="font-bold">Contact</h3>
       <p>hello@pwanimarket.co.ke</p>
@@ -102,6 +63,36 @@
     </div>
   </div>
 </footer>
+
+<script>
+// LocalStorage listings logic
+let listings = JSON.parse(localStorage.getItem('pwani_listings')) || [];
+
+function renderListings(){
+  listingContainer.innerHTML = '';
+  listings.forEach(item=>{
+    const amenities = item.amenities.map(a=>
+      `<span class="text-xs bg-gray-200 px-2 py-1 rounded">${a}</span>`
+    ).join('');
+
+    const card = `
+    <div class="bg-white rounded-2xl shadow hover:shadow-xl transition fade-in overflow-hidden">
+      <img src="${item.image || 'https://via.placeholder.com/400'}" class="w-full h-48 object-cover">
+      <div class="p-4">
+        <h3 class="font-bold">${item.title}</h3>
+        <p class="text-blue-600">KSh ${item.price}</p>
+        <p class="text-sm text-gray-500">${item.location}</p>
+        <div class="flex gap-2 flex-wrap mt-2">${amenities}</div>
+        <a href="https://wa.me/${item.phone}" class="block mt-3 bg-green-600 text-white text-center py-2 rounded-lg">WhatsApp</a>
+      </div>
+    </div>`;
+
+    listingContainer.innerHTML += card;
+  });
+}
+
+renderListings();
+</script>
 
 </body>
 </html>
