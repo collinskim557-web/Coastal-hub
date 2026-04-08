@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Listing - Pwani</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+.fade-in{animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-white text-gray-900">
+
+<!-- HEADER -->
+<header class="bg-white/80 backdrop-blur shadow sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
+    <h1 class="text-2xl font-bold text-blue-700">Pwani</h1>
+    <nav class="flex gap-6 text-sm">
+      <a href="index.html">Home</a>
+      <a href="post-listing.html" class="font-semibold text-blue-600">Post Listing</a>
+      <span>My Bookings</span>
+    </nav>
+  </div>
+</header>
+
+<section class="max-w-3xl mx-auto p-6 fade-in">
+  <h2 class="text-3xl font-bold mb-2">Post a Listing</h2>
+  <p class="text-gray-600 mb-6">Reach thousands of travelers on Kenya's coast</p>
+
+  <div class="mb-6">
+    <h3 class="font-semibold mb-2">What are you listing?</h3>
+    <div class="flex gap-6">
+      <label><input type="radio" name="type" value="stay"> Stay</label>
+      <label><input type="radio" name="type" value="car"> Car</label>
+    </div>
+  </div>
+
+  <h3 class="font-semibold mb-3">Basic Information</h3>
+  <input id="title" placeholder="Listing Title" class="w-full p-3 border rounded mb-3 focus:ring-2 focus:ring-blue-400">
+  <textarea id="desc" placeholder="Description" class="w-full p-3 border rounded mb-3 focus:ring-2 focus:ring-blue-400"></textarea>
+  <select id="location" class="w-full p-3 border rounded mb-3">
+    <option>Select Location</option>
+    <option>Mombasa</option>
+    <option>Diani</option>
+    <option>Watamu</option>
+    <option>Lamu</option>
+  </select>
+  <input id="price" placeholder="Price per Day (KES)" class="w-full p-3 border rounded mb-3">
+  <input id="image" placeholder="Photo URL" class="w-full p-3 border rounded mb-6">
+
+  <div id="stayFields">
+    <h3 class="font-semibold mb-3">Stay Details</h3>
+    <input id="guests" placeholder="Max Guests" class="w-full p-3 border rounded mb-3">
+    <input id="bedrooms" placeholder="Bedrooms" class="w-full p-3 border rounded mb-6">
+  </div>
+
+  <h3 class="font-semibold mb-3">Amenities</h3>
+  <div class="grid grid-cols-2 gap-2 mb-4">
+    <label><input type="checkbox" class="amenity" value="WiFi"> WiFi</label>
+    <label><input type="checkbox" class="amenity" value="Swimming Pool"> Pool</label>
+    <label><input type="checkbox" class="amenity" value="AC"> AC</label>
+    <label><input type="checkbox" class="amenity" value="Ocean View"> Ocean View</label>
+    <label><input type="checkbox" class="amenity" value="Parking"> Parking</label>
+  </div>
+  <input id="customAmenity" placeholder="Add custom feature" class="w-full p-3 border rounded mb-6">
+
+  <h3 class="font-semibold mb-3">Your Contact Details</h3>
+  <input id="name" placeholder="Full Name" class="w-full p-3 border rounded mb-3">
+  <input id="phone" placeholder="Phone Number" class="w-full p-3 border rounded mb-6">
+
+  <button onclick="addListing()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition">Publish Listing</button>
+</section>
+
+<script>
+// LocalStorage listings logic
+let listings = JSON.parse(localStorage.getItem('pwani_listings')) || [];
+
+function addListing(){
+  const type = document.querySelector('input[name="type"]:checked')?.value;
+  if(!type){alert('Select listing type'); return;}
+
+  const amenities = [];
+  document.querySelectorAll('.amenity:checked').forEach(el=>amenities.push(el.value));
+  if(customAmenity.value) amenities.push(customAmenity.value);
+
+  const listing = {
+    type,
+    title:title.value,
+    desc:desc.value,
+    location:location.value,
+    price:price.value,
+    image:image.value,
+    guests:guests.value,
+    bedrooms:bedrooms.value,
+    amenities,
+    name:name.value,
+    phone:phone.value
+  };
+
+  listings.push(listing);
+  localStorage.setItem('pwani_listings', JSON.stringify(listings));
+  alert('Listing Published 🚀');
+  window.location.href = 'index.html'; // redirect to homepage
+}
+</script>
+
+</body>
+</html>
