@@ -10,7 +10,6 @@
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
-
 <body class="bg-gradient-to-br from-blue-50 to-white text-gray-900">
 
 <!-- HEADER -->
@@ -25,7 +24,7 @@
   </div>
 </header>
 
-<!-- HOMEPAGE HERO -->
+<!-- HERO -->
 <section class="relative h-[60vh] flex items-center justify-center text-white fade-in">
   <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="absolute w-full h-full object-cover">
   <div class="absolute inset-0 bg-black/50"></div>
@@ -71,7 +70,7 @@ let listings = JSON.parse(localStorage.getItem('pwani_listings')) || [];
 function renderListings(){
   listingContainer.innerHTML = '';
   listings.forEach(item=>{
-    const amenities = item.amenities.map(a=>
+    const amenities = (item.amenities || []).map(a=>
       `<span class="text-xs bg-gray-200 px-2 py-1 rounded">${a}</span>`
     ).join('');
 
@@ -86,7 +85,6 @@ function renderListings(){
         <a href="https://wa.me/${item.phone}" class="block mt-3 bg-green-600 text-white text-center py-2 rounded-lg">WhatsApp</a>
       </div>
     </div>`;
-
     listingContainer.innerHTML += card;
   });
 }
