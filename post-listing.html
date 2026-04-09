@@ -261,5 +261,14 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 </script>
+
+  <script>
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) {
+    alert("Please login first!");
+    window.location.href = "index.html";
+  }
+});
+  </script>
 </body>
 </html>
