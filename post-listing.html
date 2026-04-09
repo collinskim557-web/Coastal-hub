@@ -242,5 +242,24 @@ function addListing(){
 updatePreview(); // initial render
 </script>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBKcnd952c81LyG0ofN_un-BCMdb0FzQ4w",
+  authDomain: "coastal-marketing-38cae.firebaseapp.com",
+  projectId: "coastal-marketing-38cae",
+  storageBucket: "coastal-marketing-38cae.firebasestorage.app",
+  messagingSenderId: "539485085349",
+  appId: "1:539485085349:web:bca60232ce7fe3617b374c"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+</script>
 </body>
 </html>
