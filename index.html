@@ -54,13 +54,7 @@
       <a href="index.html" class="font-semibold text-blue-600">Home</a>
       <a href="post-listing.html" class="transition hover:text-blue-800" onclick="fadeRedirect(event, 'post-listing.html')">Post Listing</a>
       <span>My Bookings</span>
-      <script>
-function logout(){
-  firebase.auth().signOut().then(() => {
-    window.location.href = "index.html";
-  });
-}
-      </script>
+      <button onclick="logout()" class="text-red-500">Logout</button>
     </nav>
   </div>
 </header>
@@ -251,5 +245,13 @@ function login() {
     });
 }
       </script>
+
+  <script>
+function logout(){
+  firebase.auth().signOut().then(() => {
+    window.location.href = "index.html";
+  });
+}
+  </script>
 </body>
 </html>
