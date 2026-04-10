@@ -30,6 +30,7 @@
       <a href="index.html" class="transition hover:text-blue-800">Home</a>
       <a href="post-listing.html" class="font-semibold text-blue-600">Post Listing</a>
       <span>My Bookings</span>
+      <button onclick="logout()" class="text-red-500">Logout</button>
     </nav>
   </div>
 </header>
@@ -275,6 +276,14 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   .catch((error) => {
     console.error("Persistence error:", error);
   });
+</script>
+
+<script>
+function logout(){
+  firebase.auth().signOut().then(() => {
+    window.location.href = "index.html";
+  });
+}
 </script>
 </body>
 </html>
