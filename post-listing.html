@@ -263,6 +263,14 @@ const db = firebase.firestore();
 </script>
 
   <script>
+firebase.auth().onAuthStateChanged(function(user) {
+  if (!user) {
+    window.location.href = "index.html";
+  }
+});
+  </script>
+
+  <script>
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   .then(() => {
     firebase.auth().onAuthStateChanged(user => {
