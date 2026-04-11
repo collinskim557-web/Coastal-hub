@@ -192,8 +192,6 @@ loadListings();
 </script>
 
 <script>
-
-</script>
 document.getElementById("searchInput").addEventListener("input", (e) => {
   const val = e.target.value.toLowerCase().trim();
 
@@ -215,6 +213,8 @@ function clearSearch(){
   document.getElementById("searchInput").value = "";
   renderListings(allListings);
 }
+</script>
+
 <script>
 function fadeRedirect(e,url){ e.preventDefault(); document.body.classList.add("fade-out"); setTimeout(()=>location.href=url,500); }
 </script>
