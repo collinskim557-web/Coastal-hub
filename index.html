@@ -178,18 +178,28 @@ loadListings();
 </script>
 
 <script>
-document.getElementById("searchInput").addEventListener("input", ()=>{
+document.getElementById("searchInput").addEventListener("input", () => {
+  const val = document.getElementById("searchInput").value.toLowerCase().trim();
+
+  if (!val) {
+    renderListings(allListings);
+    return;
+  }
+
+  const filtered = allListings.filter(item => (
+    (item.title && item.title.toLowerCase().includes(val)) ||
+    (item.location && item.location.toLowerCase().includes(val)) ||
+    (item.type && item.type.toLowerCase().includes(val))
+  ));
+
+  renderListings(filtered);
+});
+
 function clearSearch(){
   const input = document.getElementById("searchInput");
   input.value = "";
   renderListings(allListings);
 }
-  const val = document.getElementById("searchInput").value.toLowerCase().trim();
-
-  if(!val){
-    renderListings(allListings);
-    return;
-  }
 
   const filtered = allListings.filter(item => (
     (item.title && item.title.toLowerCase().includes(val)) ||
