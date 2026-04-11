@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pwani Marketplace</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
 <style>
 .fade-in{animation:fadeIn .6s ease}
 .fade-out{animation:fadeOut .5s ease forwards}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+
 .card-bg{
   background-size: cover;
   background-position: center;
@@ -19,6 +21,7 @@
   position: relative;
   color: white;
 }
+
 .card-overlay{
   position: absolute;
   inset: 0;
@@ -28,6 +31,7 @@
   flex-direction: column;
   justify-content: flex-end;
 }
+
 .location-badge{
   display: flex;
   align-items: center;
@@ -38,59 +42,55 @@
   border-radius: 0.5rem;
   margin-top: 0.5rem;
 }
+
 .location-badge img{
   width: 16px;
   height: 16px;
 }
 </style>
 </head>
+
 <body class="bg-gradient-to-br from-blue-50 to-white text-gray-900">
 
-<!-- HEADER -->
 <header class="bg-white/80 backdrop-blur shadow sticky top-0 z-50">
   <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
     <h1 class="text-2xl font-bold text-blue-700">Pwani</h1>
     <nav class="flex gap-6 text-sm">
       <a href="index.html" class="font-semibold text-blue-600">Home</a>
-      <a href="post-listing.html" class="transition hover:text-blue-800" onclick="fadeRedirect(event, 'post-listing.html')">Post Listing</a>
+      <a href="post-listing.html" onclick="fadeRedirect(event,'post-listing.html')">Post Listing</a>
       <span>My Bookings</span>
       <button onclick="logout()" class="text-red-500">Logout</button>
     </nav>
   </div>
 </header>
 
-<!-- HERO -->
 <section class="relative h-[60vh] flex items-center justify-center text-white fade-in">
   <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="absolute w-full h-full object-cover">
   <div class="absolute inset-0 bg-black/50"></div>
   <div class="relative text-center">
     <h2 class="text-5xl font-bold">Explore Kenya's Coast</h2>
-    <p class="mt-3 text-lg">Find the perfect ride or a breezy stay from Mombasa to Lamu.</p>
-    <a href="post-listing.html" class="mt-5 inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition" onclick="fadeRedirect(event,'post-listing.html')">Post Your Listing</a>
+    <p class="mt-3 text-lg">Find the perfect ride or stay.</p>
+    <a href="post-listing.html" onclick="fadeRedirect(event,'post-listing.html')" class="mt-5 inline-block bg-blue-600 px-6 py-3 rounded-lg">Post Your Listing</a>
   </div>
 </section>
 
-<section class="max-w-md mx-auto p-6 mt-6 bg-white rounded-xl shadow fade-in text-center">
+<section class="max-w-md mx-auto p-6 mt-6 bg-white rounded-xl shadow text-center">
   <h2 class="text-2xl font-bold mb-4">Create Account / Login</h2>
-
-  <input type="email" id="email" placeholder="Enter email" class="w-full p-3 border rounded mb-3"><br>
-  <input type="password" id="password" placeholder="Enter password" class="w-full p-3 border rounded mb-4"><br>
-
+  <input type="email" id="email" placeholder="Enter email" class="w-full p-3 border rounded mb-3">
+  <input type="password" id="password" placeholder="Enter password" class="w-full p-3 border rounded mb-4">
   <button onclick="signup()" class="w-full bg-blue-600 text-white py-2 rounded mb-2">Create Account</button>
   <button onclick="login()" class="w-full bg-green-600 text-white py-2 rounded">Login</button>
 </section>
-<!-- SEARCH -->
-<section class="max-w-7xl mx-auto p-6 fade-in">
-  <input id="searchInput" type="text" placeholder="Search stays, cars, or locations..." class="w-full p-3 border rounded-lg mb-6 focus:ring-2 focus:ring-blue-400">
+
+<section class="max-w-7xl mx-auto p-6">
+  <input id="searchInput" type="text" placeholder="Search stays, cars or locations..." class="w-full p-3 border rounded-lg mb-6">
 </section>
 
-<!-- FEATURED LISTINGS -->
-<section class="max-w-7xl mx-auto p-6 fade-in">
+<section class="max-w-7xl mx-auto p-6">
   <h2 class="text-3xl font-bold mb-4">Latest Listings</h2>
   <div id="listingContainer" class="grid md:grid-cols-3 gap-6"></div>
 </section>
 
-<!-- FOOTER -->
 <footer class="bg-black text-white p-6 mt-10">
   <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-6 text-sm">
     <div>
@@ -98,104 +98,16 @@
       <p>Your gateway to Kenya's coastal paradise.</p>
     </div>
     <div>
-      <h3 class="font-bold">Explore</h3>
-      <p>Villas & Stays</p>
-      <p>Cars for Hire</p>
-      <p>Mombasa</p>
-      <p>Diani</p>
-      <p>Watamu</p>
-      <p>Malindi</p>
-      <p>Kilifi</p>
-      <p>Lamu</p>
-      <p>Nyali</p>
-      <p>Bamburi</p>
-      <p>Mtwapa</p>
-      <p>Msambweni</p>
-      <p>Vipingo</p>
-      <p>Tiwi</p>
-      <p>Voi</p>
+      <h3 class="font-bold">Locations</h3>
+      <p>Mombasa</p><p>Diani</p><p>Watamu</p><p>Malindi</p><p>Kilifi</p><p>Lamu</p><p>Nyali</p><p>Bamburi</p><p>Mtwapa</p><p>Msambweni</p><p>Vipingo</p><p>Tiwi</p><p>Voi</p>
     </div>
     <div>
       <h3 class="font-bold">Contact</h3>
       <p>hello@pwanimarket.co.ke</p>
-      <p>+254 712413188</p>
+      <p>+254 712 413 188</p>
     </div>
   </div>
 </footer>
-
-<script>
-
-const listings = [];
-// Map small icons for coastal locations (placeholder example icons)
-const locationIcons = {
-  "Mombasa":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Diani":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Watamu":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Malindi":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Kilifi":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Lamu":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Nyali":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Bamburi":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Mtwapa":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Msambweni":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Vipingo":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Tiwi":"https://img.icons8.com/ios-filled/50/ffffff/marker.png",
-  "Voi":"https://img.icons8.com/ios-filled/50/ffffff/marker.png"
-};
-
-function renderListings(filteredList=null){
-  const displayList = filteredList || listings;
-  listingContainer.innerHTML = '';
-  displayList.forEach(item=>{
-    const amenities = (item.amenities || []).map(a=>
-      `<span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">${a}</span>`
-    ).join(' ');
-
-    const icon = locationIcons[item.location] || "https://img.icons8.com/ios-filled/50/ffffff/marker.png";
-
-    const card = document.createElement('div');
-    card.className = "card-bg fade-in";
-    card.style.backgroundImage = `url('${item.image || 'https://via.placeholder.com/400'}')`;
-    card.innerHTML = `
-      <div class="card-overlay">
-        <div class="flex justify-between items-center mb-1">
-          <h3 class="font-bold text-lg">${item.title}</h3>
-          <span class="text-sm text-white bg-green-600 px-2 py-1 rounded">${item.type.toUpperCase()}</span>
-        </div>
-        <p class="text-blue-100 font-semibold">KSh ${item.price}</p>
-        <div class="location-badge">
-          <img src="${icon}" alt="location icon"/>
-          <span>${item.location}</span>
-        </div>
-        <div class="flex flex-wrap gap-2 mt-2">${amenities}</div>
-        <a href="https://wa.me/${item.phone}" class="block mt-3 bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700 transition">WhatsApp</a>
-      </div>`;
-    listingContainer.appendChild(card);
-  });
-}
-
-renderListings();
-
-// SEARCH FUNCTIONALITY
-searchInput.addEventListener('input', ()=>{
-  const value = searchInput.value.toLowerCase();
-  const filtered = listings.filter(item=>{
-    return (
-      (item.title && item.title.toLowerCase().includes(value)) ||
-      (item.location && item.location.toLowerCase().includes(value)) ||
-      (item.type && item.type.toLowerCase().includes(value))
-    );
-  });
-  renderListings(filtered);
-});
-
-// Smooth page transition
-function fadeRedirect(e, url){
-  e.preventDefault();
-  document.body.classList.add('fade-out');
-  setTimeout(()=>{ window.location.href = url; }, 500);
-}
-</script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -205,87 +117,76 @@ function fadeRedirect(e, url){
 const firebaseConfig = {
   apiKey: "AIzaSyBKcnd952c81LyG0ofN_un-BCMdb0FzQ4w",
   authDomain: "coastal-marketing-38cae.firebaseapp.com",
-  projectId: "coastal-marketing-38cae",
-  storageBucket: "coastal-marketing-38cae.firebasestorage.app",
-  messagingSenderId: "539485085349",
-  appId: "1:539485085349:web:bca60232ce7fe3617b374c"
+  projectId: "coastal-marketing-38cae"
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 </script>
 
 <script>
-function signup() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      alert("Account created!");
-    })
-    .catch(error => {
-      alert(error.message);
-    });
-}
-
-function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => {
-      alert("Login success!");
-      window.location.href = "post-listing.html";
-    })
-    .catch(error => {
-      alert(error.message);
-    });
-}
-      </script>
-
-  <script>
-function logout(){
-  firebase.auth().signOut().then(() => {
-    window.location.href = "index.html";
-  });
-}
-  </script>
+function signup(){ auth.createUserWithEmailAndPassword(email.value,password.value).then(()=>alert("Account created")).catch(e=>alert(e.message)); }
+function login(){ auth.signInWithEmailAndPassword(email.value,password.value).then(()=>window.location.href="post-listing.html").catch(e=>alert(e.message)); }
+function logout(){ auth.signOut().then(()=>location.reload()); }
+</script>
 
 <script>
-const db = firebase.firestore();
-
-function loadListings() {
-  const container = document.getElementById("listingsContainer");
-  container.innerHTML = "Loading...";
-
-  db.collection("listings")
-    .get()
-    .then((snapshot) => {
-      container.innerHTML = "";
-
-      if (snapshot.empty) {
-        container.innerHTML = "<p>No listings yet</p>";
-        return;
-      }
-
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-
-        container.innerHTML += `
-          <div style="border:1px solid #ddd; margin:10px; padding:10px;">
-            <img src="${data.image}" style="width:100%; height:150px; object-fit:cover;">
-            <h3>${data.title}</h3>
-            <p>KSh ${data.price}</p>
-          </div>
-        `;
-      });
-    });
+function renderListings(list){
+  const container = document.getElementById("listingContainer");
+  container.innerHTML = "";
+  list.forEach(item=>{
+    container.innerHTML += `
+      <div class="card-bg" style="background-image:url('${item.image || ''}')">
+        <div class="card-overlay">
+          <h3 class="font-bold">${item.title || 'No title'}</h3>
+          <p>KSh ${item.price || '0'}</p>
+          <p>${item.location || 'Unknown'}</p>
+          <a href="https://wa.me/${item.phone || ''}" class="bg-green-600 mt-2 p-2 text-center rounded">WhatsApp</a>
+        </div>
+      </div>`;
+  });
 }
+</script>
 
+<script>
+let allListings = [];
+function loadListings(){
+  const container = document.getElementById("listingContainer");
+  container.innerHTML = "Loading...";
+  db.collection("listings").get().then(snapshot=>{
+    if(snapshot.empty){ container.innerHTML = "No listings yet"; return; }
+    const data=[]; snapshot.forEach(doc=>data.push(doc.data()));
+    allListings = data;
+    renderListings(allListings);
+  }).catch(()=>container.innerHTML="Error loading");
+}
 loadListings();
-        </script>
+</script>
+
+<script>
+document.getElementById("searchInput").addEventListener("input", ()=>{
+  const val = document.getElementById("searchInput").value.toLowerCase().trim();
+
+  if(!val){
+    renderListings(allListings);
+    return;
+  }
+
+  const filtered = allListings.filter(item => (
+    (item.title && item.title.toLowerCase().includes(val)) ||
+    (item.location && item.location.toLowerCase().includes(val)) ||
+    (item.type && item.type.toLowerCase().includes(val))
+  ));
+
+  renderListings(filtered);
+});
+</script>
+
+<script>
+function fadeRedirect(e,url){ e.preventDefault(); document.body.classList.add("fade-out"); setTimeout(()=>location.href=url,500); }
+</script>
+
 </body>
 </html>
+
