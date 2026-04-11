@@ -214,30 +214,47 @@ document.getElementById('dynamicFields').addEventListener('input', updatePreview
 // Save listing
 function addListing(){
   const type = document.querySelector('input[name="type"]:checked')?.value;
-  if(!type){alert('Select listing type'); return;}
+  if(!type){
+    alert('Select listing type');
+    return;
+  }
+
   const amenities = [];
-  document.querySelectorAll('.amenity:checked').forEach(el=>amenities.push(el.value));
-  if(customAmenity.value) amenities.push(customAmenity.value);
+  document.querySelectorAll('.amenity:checked').forEach(el=>{
+    amenities.push(el.value);
+  });
+
+  const customAmenity = document.getElementById('customAmenity').value;
+  if(customAmenity) amenities.push(customAmenity);
 
   const listing = {
-    type,
-    title:title.value,
-    desc:desc.value,
-    location:location.value,
-    price:price.value,
-    image:image.value,
-    guests:document.getElementById('guests')?.value || '',
-    bedrooms:document.getElementById('bedrooms')?.value || '',
-    carType:document.getElementById('carType')?.value || '',
-    seats:document.getElementById('seats')?.value || '',
-    mileage:document.getElementById('mileage')?.value || '',
-    amenities,
-    name:name.value,
-    phone:phone.value
+    type: type,
+    title: document.getElementById("title").value,
+    desc: document.getElementById("desc").value,
+    location: document.getElementById("location").value,
+    price: document.getElementById("price").value,
+    image: document.getElementById("image").value,
+    guests: document.getElementById("guests")?.value || "",
+    bedrooms: document.getElementById("bedrooms")?.value || "",
+    carType: document.getElementById("carType")?.value || "",
+    seats: document.getElementById("seats")?.value || "",
+    mileage: document.getElementById("mileage")?.value || "",
+    amenities: amenities,
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    createdAt: new Date()
   };
-  
-  alert('Listing Published 🚀');
-  window.location.href = 'index.html';
+
+  // 🔥 SAVE TO FIREBASE (THIS WAS MISSING)
+  db.collection("listings").add(listing)
+    .then(() => {
+      alert("Listing Published 🚀");
+      window.location.href = "index.html";
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Error saving listing");
+    });
 }
 updatePreview(); // initial render
 </script>
