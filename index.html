@@ -148,6 +148,17 @@ function logout(){ auth.signOut().then(()=>location.reload()); }
 function renderListings(list){
   const container = document.getElementById("listingContainer");
   container.innerHTML = "";
+
+  if (!list || list.length === 0) {
+    container.innerHTML = `
+      <div class="col-span-3 text-center py-10 text-gray-500">
+        <h2 class="text-xl font-bold">No results found</h2>
+        <p>Try searching stays, cars, or locations like Diani or Mombasa</p>
+      </div>
+    `;
+    return;
+  }
+
   list.forEach(item=>{
     container.innerHTML += `
       <div class="card-bg" style="background-image:url('${item.image || ''}')">
@@ -155,9 +166,12 @@ function renderListings(list){
           <h3 class="font-bold">${item.title || 'No title'}</h3>
           <p>KSh ${item.price || '0'}</p>
           <p>${item.location || 'Unknown'}</p>
-          <a href="https://wa.me/${item.phone || ''}" class="bg-green-600 mt-2 p-2 text-center rounded">WhatsApp</a>
+          <a href="https://wa.me/${item.phone || ''}" class="bg-green-600 mt-2 p-2 text-center rounded">
+            WhatsApp
+          </a>
         </div>
-      </div>`;
+      </div>
+    `;
   });
 }
 </script>
