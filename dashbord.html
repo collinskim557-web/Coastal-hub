@@ -37,4 +37,71 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  loadMyListings(user.uid);
+});
+
+function loadMyListings(uid){
+  const container = document.getElementById("myListings");
+  container.innerHTML = "Loading...";
+
+  db.collection("listings")
+    .where("userId", "==", uid)
+    .get()
+    .then(snapshot => {
+
+      if (snapshot.empty) {
+        container.innerHTML = `
+          <div class="text-center col-span-3 text-gray-500">
+            <h2 class="text-xl font-bold">No listings yet</h2>
+            <p>Start by posting your first stay or car 🚀</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const item = doc.data();
+
+        container.innerHTML += `
+          <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
+            <img src="${item.image || ''}" class="h-40 w-full object-cover rounded mb-2">
+
+            <h3 class="font-bold text-lg">${item.title}</h3>
+            <p class="text-gray-600">KSh ${item.price}</p>
+            <p class="text-sm text-gray-500">${item.location}</p>
+
+            <div class="flex gap-2 mt-3">
+              <button onclick="deleteListing('${doc.id}')"
+                class="bg-red-500 text-white px-3 py-1 rounded w-full">
+                Delete
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+    })
+    .catch(() => {
+      container.innerHTML = "Error loading listings";
+    });
+}
+
+function deleteListing(id){
+  if(confirm("Delete this listing?")){
+    db.collection("listings").doc(id).delete()
+      .then(() => {
+        alert("Deleted successfully");
+        location.reload();
+      });
+  }
+}
 </script>
