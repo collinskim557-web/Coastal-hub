@@ -115,8 +115,21 @@ function deleteListing(id){
   }
 }
 
-function editListing(id){
-  alert("Edit feature coming next 🚀 (we will add modal form)");
+function editListing(id, currentData) {
+  const newTitle = prompt("Edit title", currentData.title);
+  const newPrice = prompt("Edit price", currentData.price);
+  const newLocation = prompt("Edit location", currentData.location);
+
+  if (!newTitle || !newPrice || !newLocation) return;
+
+  db.collection("listings").doc(id).update({
+    title: newTitle,
+    price: newPrice,
+    location: newLocation
+  }).then(() => {
+    alert("Updated successfully 🚀");
+    location.reload();
+  });
 }
 
 function logout(){
