@@ -19,7 +19,6 @@
 
 <section class="max-w-6xl mx-auto p-6">
   <h2 class="text-2xl font-bold mb-4">My Listings</h2>
-
   <div id="myListings" class="grid md:grid-cols-3 gap-6"></div>
 </section>
 
@@ -28,7 +27,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
-
 const firebaseConfig = {
   apiKey: "AIzaSyBKcnd952c81LyG0ofN_un-BCMdb0FzQ4w",
   authDomain: "coastal-marketing-38cae.firebaseapp.com",
@@ -37,6 +35,7 @@ const firebaseConfig = {
   messagingSenderId: "539485085349",
   appId: "1:539485085349:web:bca60232ce7fe3617b374c"
 };
+
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
@@ -46,7 +45,6 @@ auth.onAuthStateChanged(user => {
     window.location.href = "index.html";
     return;
   }
-
   loadMyListings(user.uid);
 });
 
@@ -76,25 +74,34 @@ function loadMyListings(uid){
 
         container.innerHTML += `
           <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
+
             <img src="${item.image || ''}" class="h-40 w-full object-cover rounded mb-2">
 
-            <h3 class="font-bold text-lg">${item.title}</h3>
-            <p class="text-gray-600">KSh ${item.price}</p>
-            <p class="text-sm text-gray-500">${item.location}</p>
+            <h3 class="font-bold text-lg">${item.title || 'No title'}</h3>
+            <p class="text-gray-600">KSh ${item.price || 0}</p>
+            <p class="text-sm text-gray-500">${item.location || 'Unknown'}</p>
 
             <div class="flex gap-2 mt-3">
+
+              <button onclick="editListing('${doc.id}')"
+                class="bg-blue-500 text-white px-3 py-1 rounded w-full">
+                Edit
+              </button>
+
               <button onclick="deleteListing('${doc.id}')"
                 class="bg-red-500 text-white px-3 py-1 rounded w-full">
                 Delete
               </button>
+
             </div>
           </div>
         `;
       });
 
     })
-    .catch(() => {
-      container.innerHTML = "Error loading listings";
+    .catch(err => {
+      console.error(err);
+      document.getElementById("myListings").innerHTML = "Error loading listings";
     });
 }
 
@@ -108,9 +115,16 @@ function deleteListing(id){
   }
 }
 
+function editListing(id){
+  alert("Edit feature coming next 🚀 (we will add modal form)");
+}
+
 function logout(){
   auth.signOut().then(()=>{
     window.location.href = "index.html";
   });
 }
 </script>
+
+</body>
+</html>
